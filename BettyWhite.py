@@ -1,28 +1,64 @@
 """
 Author: Logan Maupin
-Date: 09/19/2022
+Date: 04/15/2023
 
 FB Page Name: Daily Updates on Betty White's Health Condition
 FB page link: https://www.facebook.com/IsBettyOkOrNah
 
 GitHub link to this code: https://github.com/Voltaic314/Daily-FB-Poster-For-Python-Betty-White-Bot
 
-This program will post "She's Dead." to the FB page above. It does contain a function to use a random choice
-of 8 other possible statuses as well, but this isn't fleshed out as much as I'd like. So it gets old pretty quick.
+This program will post "She's dead." to the FB page above. Although it posts "She's alive!" if the current day is
+April Fools' Day, lol.
 """
 
 import requests
 import config
+from datetime import datetime
+
+
+def get_date() -> str:
+    """
+    This function gets the current date, just the month and day, and returns it.
+    The reason we are doing this is to see if the date is April Fools' Day (04/01) in mm/dd format or not,
+    if it is, we will post a different string to Facebook. :)
+    :returns: a string representing the month and date. The string will look like this: "04/15" for a date of  04/15.
+    """
+    return str(datetime.now().strftime("%m/%d"))
+
+
+def check_if_date_is_april_fools(date_string: str) -> bool:
+    """
+    The purpose of this function is to check if the current day is April Fools' Day or not. :)
+    :param date_string: a string that is in the format of "mm/dd"
+    :returns: boolean value of True or False depending on if the current day passed in via the string is 04/01 or not.
+    """
+    if date_string == "04/15":
+        return True
+    else:
+        return False
+
+
+def april_fools_message(is_april_fools: bool) -> str:
+    """
+    The purpose of this function is to return the correct string to post if the current day is April Fools' Day or not.
+    :param is_april_fools: boolean value representing true or false if the current day is April Fools' Day
+    :returns: String to post to FB given whether it is or is not April Fools' Day.
+    """
+    if is_april_fools:
+        return "She's alive!"
+    else:
+        return "She's dead."
 
 
 def build_fb_message():
     """
     This function builds up a dictionary object with specific data that we want inside the dictionary like what
     we want to say in the post and our access token to allow access to post.
-
     :returns: payload variable which represents the dictionary, and the post url to make the web request for.
     """
-    msg = "She's Dead."
+    current_date = get_date()
+    is_april_fools = check_if_date_is_april_fools(current_date)
+    msg = april_fools_message(is_april_fools)
     page_id = "101862182407007"
     post_url = 'https://graph.facebook.com/{}/feed'.format(page_id)
     payload = {
@@ -56,7 +92,6 @@ def main():
 
     payload, post_url = build_fb_message()
     return_text = post_to_fb(payload, post_url)
-
     return return_text
 
 
