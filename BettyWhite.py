@@ -1,5 +1,5 @@
 """
-Author: Logan Maupin
+Author: Voltaic314
 Date: 04/15/2023
 
 FB Page Name: Daily Updates on Betty White's Health Condition
