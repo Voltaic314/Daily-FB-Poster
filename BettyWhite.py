@@ -12,7 +12,7 @@ April Fools' Day, lol.
 """
 
 import requests
-import config
+import secrets
 from datetime import datetime
 
 
@@ -32,7 +32,7 @@ def check_if_date_is_april_fools(date_string: str) -> bool:
     :param date_string: a string that is in the format of "mm/dd"
     :returns: boolean value of True or False depending on if the current day passed in via the string is 04/01 or not.
     """
-    if date_string == "04/15":
+    if date_string == "04/01":
         return True
     else:
         return False
@@ -63,7 +63,7 @@ def build_fb_message():
     post_url = 'https://graph.facebook.com/{}/feed'.format(page_id)
     payload = {
         "message": msg,
-        "access_token": config.config_stuff['FB_Access_Token']
+        "access_token": secrets.secret_stuff['FB_Access_Token']
       }
     return payload, post_url
 
